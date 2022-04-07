@@ -46,8 +46,50 @@ function Practice() {
         wins: schools3[key]
     }))
 
-    console.log(Object.keys(schools3))
-    console.log(schoolArray)
+    const ages = [21, 18, 42, 40, 64, 63, 34]
+
+    const maxAge = ages.reduce((max, age) => {
+        // console.log(`${age} > ${max} = ${age > max}`)
+        if (age > max) {
+            return age
+        } else {
+            return max
+        }
+    }, 0)
+
+    const colors = [
+        {
+            id: 'xekare',
+            title: '과격한빨강',
+            rating: 3
+        },
+        {
+            id: 'jbwsof',
+            title: '큰 파랑',
+            rating: 2
+        },
+        {
+            id: 'pringbj',
+            title: '회색곰 회색',
+            rating: 5
+        }
+    ]
+
+    const hashColors = colors.reduce(
+        (hash, {id, title, rating}) => {
+            hash[id] = {title, rating}
+            return hash
+        }
+    , {})
+
+    const color = ['red', 'red', 'green', 'blue', 'green']
+
+    const uniqueColors = color.reduce(
+        (unique, color) =>
+            unique.indexOf(color) !== -1 ? unique : [...unique, color], []
+    )
+
+    console.log(uniqueColors)
 
     return <></>
 }
