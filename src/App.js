@@ -8,6 +8,10 @@ import UserList from "./UserList";
 import React, {useCallback, useMemo, useReducer, useRef, useState} from "react";
 import CreateUser from "./CreateUser";
 import UseInputs from "./hooks/UseInputs";
+import produce from 'immer';
+import User from "./User";
+import ErrorBoundary from "./ErrorBoundary";
+import {DatePicker} from "antd";
 
 function countActiveUsers(users) {
     console.log('활성 사용자 수를 세는중...')
@@ -43,6 +47,7 @@ const initialState = {
 
 const reducer = (state, action) => {
     switch (action.type) {
+        /*
         case 'CHANGE_INPUT':
             return {
                 ...state,
@@ -51,21 +56,33 @@ const reducer = (state, action) => {
                     [action.name]: action.value
                 }
             }
+         */
         case 'CREATE_USER':
-            return {
+            /*return {
                 inputs: initialState.inputs,
                 users: state.users.concat(action.user)
-            }
+            }*/
+            return produce(state, draft => {
+                draft.users.push(action.user)
+            })
         case 'TOGGLE_USER':
-            return {
+            /*return {
                 ...state,
                 users: state.users.map(user => user.id === action.id ? { ...user, active: !user.active } : user)
-            }
+            }*/
+            return produce(state, draft => {
+                const user = draft.users.find(user => user.id === action.id)
+                user.active = !user.active
+            })
         case 'REMOVE_USER':
-            return {
+            /*return {
                 ...state,
                 users: state.users.filter(user => user.id !== action.id)
-            }
+            }*/
+            return produce(state, draft => {
+                const index = draft.users.find(user => user.id === action.id)
+                draft.users.splice(index, 1)
+            })
         default:
             return state
     }
@@ -115,12 +132,18 @@ function App() {
     const count = useMemo(() => countActiveUsers(users), [users])
 
     return (
+        /*
         <UserDispatch.Provider value={dispatch}>
             <CreateUser/>
             <UserList users={users}/>
             <div>활성 사용자 수 : {count}</div>
             <Practice/>
         </UserDispatch.Provider>
+        */
+        <DatePicker />
+        /*<ErrorBoundary>
+            <User />
+        </ErrorBoundary>*/
     )
 }
 
